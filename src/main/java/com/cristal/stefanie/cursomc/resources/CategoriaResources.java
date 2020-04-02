@@ -1,6 +1,11 @@
 package com.cristal.stefanie.cursomc.resources;
 
 import com.cristal.stefanie.cursomc.domain.Categoria;
+import com.cristal.stefanie.cursomc.services.CategoriaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,16 +17,13 @@ import java.util.List;
 @RequestMapping(value = "/categorias")
 public class CategoriaResources {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Categoria> funcionar() {
+    @Autowired
+    private CategoriaService service;
 
-        Categoria cat1 = new Categoria(1, "Informática");
-        Categoria cat2 = new Categoria(2, "Escritorio");
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> find(@PathVariable Integer id) {
+        Categoria obj = service.buscar(id);
 
-        List<Categoria> lista = new ArrayList<>();
-        lista.add(cat1);
-        lista.add(cat2);
-
-        return lista;
+        return ResponseEntity.ok().body(obj);
     }
 }
