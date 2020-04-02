@@ -25,6 +25,10 @@ public class CursomcApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        produtoRepository.findAll().forEach(produtoRepository::delete);
+        categoriaRepository.findAll().forEach(categoriaRepository::delete);
+
         Categoria categoria1 = new Categoria(null, "Informática");
         Categoria categoria2 = new Categoria(null, "Escritório");
 
