@@ -45,6 +45,9 @@ public class CursomcApplication implements CommandLineRunner {
 
         produtoRepository.findAll().forEach(produtoRepository::delete);
         categoriaRepository.findAll().forEach(categoriaRepository::delete);
+        clienteRepository.findAll().forEach(clienteRepository::delete);
+        estadoRepository.findAll().forEach(estadoRepository::delete);
+        enderecoRepository.findAll().forEach(enderecoRepository ::delete);
 
         Categoria categoria1 = new Categoria(null, "Informática");
         Categoria categoria2 = new Categoria(null, "Escritório");
