@@ -2,10 +2,15 @@ package com.cristal.stefanie.cursomc;
 
 import com.cristal.stefanie.cursomc.domain.Categoria;
 import com.cristal.stefanie.cursomc.domain.Cidade;
+import com.cristal.stefanie.cursomc.domain.Cliente;
+import com.cristal.stefanie.cursomc.domain.Endereco;
 import com.cristal.stefanie.cursomc.domain.Estado;
 import com.cristal.stefanie.cursomc.domain.Produto;
+import com.cristal.stefanie.cursomc.domain.enuns.TipoCliente;
 import com.cristal.stefanie.cursomc.repositores.CategoriaRepository;
 import com.cristal.stefanie.cursomc.repositores.CidadeRepository;
+import com.cristal.stefanie.cursomc.repositores.ClienteRepository;
+import com.cristal.stefanie.cursomc.repositores.EnderecoRepository;
 import com.cristal.stefanie.cursomc.repositores.EstadoRepository;
 import com.cristal.stefanie.cursomc.repositores.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,10 @@ public class CursomcApplication implements CommandLineRunner {
     private EstadoRepository estadoRepository;
     @Autowired
     private CidadeRepository cidadeRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(CursomcApplication.class, args);
@@ -52,20 +61,31 @@ public class CursomcApplication implements CommandLineRunner {
         produto3.getCategorias().addAll(Arrays.asList(categoria1));
 
         categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2));
-        produtoRepository.saveAll(Arrays.asList(produto1,produto2,produto3));
+        produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3));
 
-        Estado estado1 = new Estado(null,"Minas Gerais");
-        Estado estado2 = new Estado(null,"São Paulo");
+        Estado estado1 = new Estado(null, "Minas Gerais");
+        Estado estado2 = new Estado(null, "São Paulo");
 
-        Cidade cidade1 = new Cidade(null, "Uberlândia",estado1);
-        Cidade cidade2 = new Cidade(null, "São Paulo",estado2);
-        Cidade cidade3 = new Cidade(null, "Campinas",estado2);
+        Cidade cidade1 = new Cidade(null, "Uberlândia", estado1);
+        Cidade cidade2 = new Cidade(null, "São Paulo", estado2);
+        Cidade cidade3 = new Cidade(null, "Campinas", estado2);
 
         estado1.getCidades().addAll(Arrays.asList(cidade1));
-        estado2.getCidades().addAll(Arrays.asList(cidade2,cidade3));
+        estado2.getCidades().addAll(Arrays.asList(cidade2, cidade3));
 
-        estadoRepository.saveAll(Arrays.asList(estado1,estado2));
-        cidadeRepository.saveAll(Arrays.asList(cidade1,cidade2,cidade3));
+        estadoRepository.saveAll(Arrays.asList(estado1, estado2));
+        cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
+
+        Cliente cliente1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "42542045873", TipoCliente.PESSOAFISICA);
+        cliente1.getTelefones().addAll(Arrays.asList("23659874", "93827145"));
+
+        Endereco endereco1 = new Endereco(null, "Rua Flores", "340", "apto 303", "Jardins", "38220834", cliente1, cidade1);
+        Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "sala 800", "Centro", "38777012", cliente1, cidade2);
+
+        cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+
+        clienteRepository.saveAll(Arrays.asList(cliente1));
+        enderecoRepository.saveAll(Arrays.asList(endereco1,endereco2));
 
     }
 }
