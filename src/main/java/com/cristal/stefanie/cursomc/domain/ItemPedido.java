@@ -1,5 +1,7 @@
 package com.cristal.stefanie.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import java.io.Serializable;
@@ -9,6 +11,7 @@ import java.util.Objects;
 public class ItemPedido implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
     @EmbeddedId
     private ItemPedidoPk id = new ItemPedidoPk();
 
@@ -59,9 +62,11 @@ public class ItemPedido implements Serializable {
         this.preco = preco;
     }
 
+
     public Produto getProduto() {
         return id.getProduto();
     }
+    @JsonIgnore
     public Pedido getPedido() {
         return id.getPedido();
     }
