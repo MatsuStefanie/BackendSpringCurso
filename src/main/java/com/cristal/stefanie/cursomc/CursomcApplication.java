@@ -31,6 +31,8 @@ public class CursomcApplication implements CommandLineRunner {
     private PedidoRepository pedidoRepository;
     @Autowired
     private PagamentoRepository pagamentoRepository;
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(CursomcApplication.class, args);
@@ -38,8 +40,8 @@ public class CursomcApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-/*
-        produtoRepository.findAll().forEach(produtoRepository::delete);
+
+        /*produtoRepository.findAll().forEach(produtoRepository::delete);
         categoriaRepository.findAll().forEach(categoriaRepository::delete);
         clienteRepository.findAll().forEach(clienteRepository::delete);
         estadoRepository.findAll().forEach(estadoRepository::delete);
@@ -86,22 +88,35 @@ public class CursomcApplication implements CommandLineRunner {
         cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
 
         clienteRepository.saveAll(Arrays.asList(cliente1));
-        enderecoRepository.saveAll(Arrays.asList(endereco1,endereco2));
+        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        Pedido pedido1 = new Pedido(null, simpleDateFormat.parse("30/09/2017 10:32"),cliente1,endereco1);
+        Pedido pedido1 = new Pedido(null, simpleDateFormat.parse("30/09/2017 10:32"), cliente1, endereco1);
         Pedido pedido2 = new Pedido(null, simpleDateFormat.parse("10/10/2017 19:35"), cliente1, endereco2);
 
-        Pagamento pagamento1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1,6);
+        Pagamento pagamento1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
         pedido1.setPagamento(pagamento1);
 
-        Pagamento pagamento2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE,pedido2,simpleDateFormat.parse("20/10/2017 00:00"),null);
+        Pagamento pagamento2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido2, simpleDateFormat.parse("20/10/2017 00:00"), null);
         pedido2.setPagamento(pagamento2);
 
-        cliente1.getPedidos().addAll(Arrays.asList(pedido1,pedido2));
+        cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
 
-        pedidoRepository.saveAll(Arrays.asList(pedido1,pedido2));
-        pagamentoRepository.saveAll(Arrays.asList(pagamento1,pagamento2));
+        pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
+        pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));
+
+        ItemPedido itemPedido1 = new ItemPedido(pedido1, produto1, 0.00, 1, 2000.00);
+        ItemPedido itemPedido2 = new ItemPedido(pedido1, produto3, 0.00, 2, 80.00);
+        ItemPedido itemPedido3 = new ItemPedido(pedido2, produto2, 100.00, 1, 800.00);
+
+        pedido1.getItens().addAll(Arrays.asList(itemPedido1, itemPedido2));
+        pedido2.getItens().addAll(Arrays.asList(itemPedido3));
+
+        produto1.getItens().addAll(Arrays.asList(itemPedido1));
+        produto2.getItens().addAll(Arrays.asList(itemPedido3));
+        produto3.getItens().addAll(Arrays.asList(itemPedido2));
+
+        itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
     }
 }
