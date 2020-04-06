@@ -41,14 +41,6 @@ public class CursomcApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-/*        produtoRepository.findAll().forEach(produtoRepository::delete);
-        categoriaRepository.findAll().forEach(categoriaRepository::delete);
-        clienteRepository.findAll().forEach(clienteRepository::delete);
-        estadoRepository.findAll().forEach(estadoRepository::delete);
-        enderecoRepository.findAll().forEach(enderecoRepository ::delete);
-        pedidoRepository.findAll().forEach(pedidoRepository::delete);
-        pagamentoRepository.findAll().forEach(pagamentoRepository::delete);
-*/
         Categoria categoria1 = new Categoria(null, "Informática");
         Categoria categoria2 = new Categoria(null, "Escritório");
 
@@ -120,3 +112,10 @@ public class CursomcApplication implements CommandLineRunner {
         itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
     }
 }
+  /*produtoRepository.findAll().forEach(produtoRepository::delete);
+        categoriaRepository.findAll().forEach(categoriaRepository::delete);
+        clienteRepository.findAll().forEach(clienteRepository::delete);
+        estadoRepository.findAll().forEach(estadoRepository::delete);
+        enderecoRepository.findAll().forEach(enderecoRepository ::delete);
+        pedidoRepository.findAll().forEach(pedidoRepository::delete);
+        pagamentoRepository.findAll().forEach(pagamentoRepository::delete);*/
