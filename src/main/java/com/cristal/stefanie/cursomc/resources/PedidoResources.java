@@ -1,5 +1,6 @@
 package com.cristal.stefanie.cursomc.resources;
 
+import com.cristal.stefanie.cursomc.domain.Categoria;
 import com.cristal.stefanie.cursomc.domain.Pedido;
 import com.cristal.stefanie.cursomc.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ public class PedidoResources {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id) {
-
         Pedido obj = service.buscar(id);
         return ResponseEntity.ok().body(obj);
     }
