@@ -1,6 +1,7 @@
 package com.cristal.stefanie.cursomc.services;
 
 import com.cristal.stefanie.cursomc.domain.Categoria;
+import com.cristal.stefanie.cursomc.dto.CategoriaDTO;
 import com.cristal.stefanie.cursomc.repositores.CategoriaRepository;
 import com.cristal.stefanie.cursomc.services.exceptions.DataIntregrityException;
 import com.cristal.stefanie.cursomc.services.exceptions.ObjectNotFoundException;
@@ -54,5 +55,9 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return repo.findAll(pageRequest);
+    }
+
+    public Categoria fromDTO(CategoriaDTO objDTO) {
+     return new Categoria(objDTO.getId(),objDTO.getNome());
     }
 }
