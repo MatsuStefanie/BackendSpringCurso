@@ -2,10 +2,13 @@ package com.cristal.stefanie.cursomc.services;
 
 import com.cristal.stefanie.cursomc.domain.Categoria;
 import com.cristal.stefanie.cursomc.repositores.CategoriaRepository;
+import com.cristal.stefanie.cursomc.services.exceptions.DataIntregrityException;
 import com.cristal.stefanie.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.PanelUI;
 import java.util.Optional;
 
 @Service
@@ -29,5 +32,14 @@ public class CategoriaService {
     public Categoria update(Categoria obj) {
         find(obj.getId());
         return repo.save(obj);
+    }
+
+    public void delete(Integer id){
+    find(id);
+    try{
+    repo.deleteById(id);
+    }catch (DataIntegrityViolationException e){
+throw new DataIntregrityException("não é possivel excluir uma categoria que possui produtos");
+    }
     }
 }
