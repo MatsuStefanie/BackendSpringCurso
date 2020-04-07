@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.swing.plaf.PanelUI;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,12 +35,16 @@ public class CategoriaService {
         return repo.save(obj);
     }
 
-    public void delete(Integer id){
-    find(id);
-    try{
-    repo.deleteById(id);
-    }catch (DataIntegrityViolationException e){
-throw new DataIntregrityException("não é possivel excluir uma categoria que possui produtos");
+    public void delete(Integer id) {
+        find(id);
+        try {
+            repo.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntregrityException("não é possivel excluir uma categoria que possui produtos");
+        }
     }
+
+    public List<Categoria> findAll(){
+        return repo.findAll();
     }
 }
