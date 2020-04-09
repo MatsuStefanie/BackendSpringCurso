@@ -1,6 +1,7 @@
 package com.cristal.stefanie.cursomc.services;
 
 import com.cristal.stefanie.cursomc.domain.Categoria;
+import com.cristal.stefanie.cursomc.domain.Cliente;
 import com.cristal.stefanie.cursomc.dto.CategoriaDTO;
 import com.cristal.stefanie.cursomc.repositores.CategoriaRepository;
 import com.cristal.stefanie.cursomc.services.exceptions.DataIntregrityException;
@@ -34,7 +35,8 @@ public class CategoriaService {
     }
 
     public Categoria update(Categoria obj) {
-        find(obj.getId());
+        Categoria newOBJ = find(obj.getId());
+        updateData(newOBJ,obj);
         return repo.save(obj);
     }
 
@@ -58,5 +60,9 @@ public class CategoriaService {
 
     public Categoria fromDTO(CategoriaDTO objDTO) {
         return new Categoria(objDTO.getId(), objDTO.getNome());
+    }
+
+    private void updateData(Categoria newObj, Categoria obj){
+        newObj.setNome(obj.getNome());
     }
 }
