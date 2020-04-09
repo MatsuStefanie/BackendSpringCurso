@@ -3,13 +3,7 @@ package com.cristal.stefanie.cursomc.domain;
 import com.cristal.stefanie.cursomc.domain.enuns.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,7 +25,7 @@ public class Cliente implements Serializable {
     private Integer tipo;
 
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection
