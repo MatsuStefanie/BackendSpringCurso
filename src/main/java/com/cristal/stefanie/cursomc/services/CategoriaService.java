@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +57,6 @@ public class CategoriaService {
     }
 
     public Categoria fromDTO(CategoriaDTO objDTO) {
-     return new Categoria(objDTO.getId(),objDTO.getNome());
+        return new Categoria(objDTO.getId(), objDTO.getNome());
     }
 }
