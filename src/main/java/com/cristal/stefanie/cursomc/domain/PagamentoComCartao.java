@@ -1,10 +1,14 @@
 package com.cristal.stefanie.cursomc.domain;
 
 import com.cristal.stefanie.cursomc.domain.enuns.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Entity;
 
 @Entity
+@JsonTypeName("pagamentoComCartao")
+//@JsonType("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
     private static final long serialVersionUID = 1L;
 
