@@ -93,6 +93,14 @@ public class Pedido implements Serializable {
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
+    public Double getValorTotal(){
+        Double soma = 0.0;
+        for(ItemPedido x : itens){
+            soma += x.getSubTotal();
+        }
+        return soma;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
