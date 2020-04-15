@@ -16,12 +16,12 @@ public class DevConfig {
     @Autowired
     private DBService dbService;
 
-    @Value("$[spring.jpa.hibernate.ddl-auto]")
-    private String estado;
+    @Value("${cristal.gym.control.start-db}")
+    private Boolean iniciarBanco;
 
     @Bean
     public boolean instatiateDatabase() throws ParseException {
-        if (!"create".equals(estado)) {
+        if (Boolean.FALSE.equals(iniciarBanco)) {
             return false;
         }
         dbService.instantiateTestDatabase();
