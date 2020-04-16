@@ -4,6 +4,7 @@ import com.cristal.stefanie.cursomc.domain.ItemPedido;
 import com.cristal.stefanie.cursomc.domain.PagamentoComBoleto;
 import com.cristal.stefanie.cursomc.domain.Pedido;
 import com.cristal.stefanie.cursomc.domain.enuns.EstadoPagamento;
+import com.cristal.stefanie.cursomc.repositores.ClienteRepository;
 import com.cristal.stefanie.cursomc.repositores.ItemPedidoRepository;
 import com.cristal.stefanie.cursomc.repositores.PagamentoRepository;
 import com.cristal.stefanie.cursomc.repositores.PedidoRepository;
@@ -28,6 +29,8 @@ public class PedidoService {
     private PagamentoRepository pagamentoRepository;
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+    @Autowired
+    private ClienteService clienteService;
 
     public Pedido find(Integer id) {
         Optional<Pedido> obj = repo.findById(id);
@@ -39,6 +42,7 @@ public class PedidoService {
     public Pedido insert(Pedido obj) {
         obj.setId(null);
         obj.setInstante(new Date());
+        obj.setCliente(clienteService.find(obj.getCliente().getId()));
         obj.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
         obj.getPagamento().setPedido(obj);
         if (obj.getPagamento() instanceof PagamentoComBoleto) {
@@ -50,10 +54,12 @@ public class PedidoService {
 
         for (ItemPedido itemPedido : obj.getItens()) {
             itemPedido.setDesconto(0.0);
-            itemPedido.setPreco(service.find(itemPedido.getProduto().getId()).getPreco());
+            itemPedido.setProduto(service.find(itemPedido.getProduto().getId()));
+            itemPedido.setPreco(itemPedido.getProduto().getPreco());
             itemPedido.setPedido(obj);
         }
         itemPedidoRepository.saveAll(obj.getItens());
+        System.out.println(obj);
         return obj;
     }
 }

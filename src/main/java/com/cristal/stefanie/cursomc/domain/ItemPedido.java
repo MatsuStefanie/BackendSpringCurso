@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -94,5 +96,18 @@ public void setPedido(Pedido pedido){
         return Objects.hash(id);
     }
 
-
+    @Override
+    public String toString() {
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        StringBuilder b = new StringBuilder();
+        b.append(getProduto().getNome());
+        b.append(", Qte: ");
+        b.append(getQuantidade());
+        b.append(", Preço unitário");
+        b.append(numberFormat.format(getPreco()));
+        b.append(", Subtotal: ");
+        b.append(numberFormat.format(getSubTotal()));
+        b.append("\n");
+        return b.toString();
+    }
 }
