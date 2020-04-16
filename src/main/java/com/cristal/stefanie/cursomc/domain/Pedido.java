@@ -125,7 +125,7 @@ public class Pedido implements Serializable {
         StringBuilder b = new StringBuilder();
         b.append("Número do pedido: ");
         b.append(getId());
-        b.append(", Instante: ");
+        b.append(", Compra realizada em: ");
         b.append(simpleDateFormat.format(getInstante()));
         b.append(", Cliente: ");
         b.append(getCliente().getNome());

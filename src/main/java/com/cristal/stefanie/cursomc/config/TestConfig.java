@@ -1,6 +1,8 @@
 package com.cristal.stefanie.cursomc.config;
 
 import com.cristal.stefanie.cursomc.services.DBService;
+import com.cristal.stefanie.cursomc.services.EmailService;
+import com.cristal.stefanie.cursomc.services.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,5 +21,9 @@ public class TestConfig {
     public boolean instatiateDatabase() throws ParseException {
         dbService.instantiateTestDatabase();
         return true;
+    }
+    @Bean
+    public EmailService emailService(){
+        return new MockEmailService();
     }
 }
