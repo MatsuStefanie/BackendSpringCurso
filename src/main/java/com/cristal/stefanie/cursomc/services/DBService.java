@@ -23,7 +23,9 @@ import com.cristal.stefanie.cursomc.repositores.PagamentoRepository;
 import com.cristal.stefanie.cursomc.repositores.PedidoRepository;
 import com.cristal.stefanie.cursomc.repositores.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,7 +52,10 @@ public class DBService {
     private PagamentoRepository pagamentoRepository;
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Transactional
     public void instantiateTestDatabase() throws ParseException{
 
         produtoRepository.findAll().forEach(produtoRepository::delete);
@@ -71,13 +76,13 @@ public class DBService {
         Produto produto2 = new Produto(null, "Impressora", 800.00);
         Produto produto3 = new Produto(null, "Mouse", 80.00);
         Produto produto4 = new Produto(null, "Mesa de escritório", 300.00);
-        Produto produto5 = new Produto(null, " Toalha ", 50.00);
-        Produto produto6 = new Produto(null, " Colcha ", 200.00);
-        Produto produto7 = new Produto(null, " TV true color ", 1200.00);
-        Produto produto8 = new Produto(null, " Roçadeira ", 800.00);
-        Produto produto9 = new Produto(null, " Abajour ", 100.00);
-        Produto produto10 = new Produto(null, " Pendente ", 180.00);
-        Produto produto11 = new Produto(null, " Shampoo ", 90.00);
+        Produto produto5 = new Produto(null, "Toalha ", 50.00);
+        Produto produto6 = new Produto(null, "Colcha ", 200.00);
+        Produto produto7 = new Produto(null, "TV true color ", 1200.00);
+        Produto produto8 = new Produto(null, "Roçadeira ", 800.00);
+        Produto produto9 = new Produto(null, "Abajour ", 100.00);
+        Produto produto10 = new Produto(null, "Pendente ", 180.00);
+        Produto produto11 = new Produto(null, "Shampoo ", 90.00);
 
         categoria1.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3));
         categoria2.getProdutos().addAll(Arrays.asList(produto2, produto4));
@@ -116,7 +121,7 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(estado1, estado2));
         cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-        Cliente cliente1 = new Cliente(null, "Matsu Silva", "stefaniedasilvasouza.matsu@gmail.com", "42542045873", TipoCliente.PESSOAFISICA);
+        Cliente cliente1 = new Cliente(null, "Matsu Silva", "stefaniedasilvasouza.matsu@gmail.com", "42542045873", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("1234") );
         cliente1.getTelefones().addAll(Arrays.asList("23659874", "93827145"));
 
         Endereco endereco1 = new Endereco(null, "Rua Flores", "340", "apto 303", "Jardins", "38220834", cliente1, cidade1);

@@ -25,7 +25,8 @@ public class TestConfig {
     public boolean instatiateDatabase() throws ParseException {
         if (Boolean.FALSE.equals(iniciarBanco)) {
             return false;
-        }dbService.instantiateTestDatabase();
+        }
+        dbService.instantiateTestDatabase();
         return true;
     }
     @Bean
