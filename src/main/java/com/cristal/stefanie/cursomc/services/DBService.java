@@ -12,6 +12,7 @@ import com.cristal.stefanie.cursomc.domain.PagamentoComCartao;
 import com.cristal.stefanie.cursomc.domain.Pedido;
 import com.cristal.stefanie.cursomc.domain.Produto;
 import com.cristal.stefanie.cursomc.domain.enuns.EstadoPagamento;
+import com.cristal.stefanie.cursomc.domain.enuns.Perfil;
 import com.cristal.stefanie.cursomc.domain.enuns.TipoCliente;
 import com.cristal.stefanie.cursomc.repositores.CategoriaRepository;
 import com.cristal.stefanie.cursomc.repositores.CidadeRepository;
@@ -56,7 +57,7 @@ public class DBService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public void instantiateTestDatabase() throws ParseException{
+    public void instantiateTestDatabase() throws ParseException {
 
         produtoRepository.findAll().forEach(produtoRepository::delete);
         categoriaRepository.findAll().forEach(categoriaRepository::delete);
@@ -121,16 +122,24 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(estado1, estado2));
         cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-        Cliente cliente1 = new Cliente(null, "Matsu Silva", "stefaniedasilvasouza.matsu@gmail.com", "42542045873", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("1234") );
+        Cliente cliente1 = new Cliente(null, "Matsu Silva", "stefaniedasilvasouza.matsu@gmail.com", "42542045873", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("1234"));
         cliente1.getTelefones().addAll(Arrays.asList("23659874", "93827145"));
+
+        Cliente cliente2 = new Cliente(null, "Joselia Bittencurt", "stefaniehiper@gmail.com", "76078515420", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("9876"));
+        cliente2.addPerfil(Perfil.ADMIN);
+        cliente2.getTelefones().addAll(Arrays.asList("23659874", "93827145"));
 
         Endereco endereco1 = new Endereco(null, "Rua Flores", "340", "apto 303", "Jardins", "38220834", cliente1, cidade1);
         Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "sala 800", "Centro", "38777012", cliente1, cidade2);
 
-        cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+        Endereco endereco3 = new Endereco(null, "Alameda Sebastião Donattelo", "953", "Casa 1", "Satelite", "34278963", cliente2, cidade1);
+        Endereco endereco4 = new Endereco(null, "Estrada dos Banderantes ", "5023", "Sala 103", "Centro", "54782159", cliente2, cidade3);
 
-        clienteRepository.saveAll(Arrays.asList(cliente1));
-        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+        cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+        cliente2.getEnderecos().addAll(Arrays.asList(endereco3, endereco4));
+
+        clienteRepository.saveAll(Arrays.asList(cliente1, cliente2));
+        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2,endereco3, endereco4));
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
