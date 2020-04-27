@@ -77,13 +77,13 @@ public class DBService {
         Produto produto2 = new Produto(null, "Impressora", 800.00);
         Produto produto3 = new Produto(null, "Mouse", 80.00);
         Produto produto4 = new Produto(null, "Mesa de escritório", 300.00);
-        Produto produto5 = new Produto(null, "Toalha ", 50.00);
-        Produto produto6 = new Produto(null, "Colcha ", 200.00);
-        Produto produto7 = new Produto(null, "TV true color ", 1200.00);
-        Produto produto8 = new Produto(null, "Roçadeira ", 800.00);
-        Produto produto9 = new Produto(null, "Abajour ", 100.00);
-        Produto produto10 = new Produto(null, "Pendente ", 180.00);
-        Produto produto11 = new Produto(null, "Shampoo ", 90.00);
+        Produto produto5 = new Produto(null, " Toalha ", 50.00);
+        Produto produto6 = new Produto(null, " Colcha ", 200.00);
+        Produto produto7 = new Produto(null, " TV true color ", 1200.00);
+        Produto produto8 = new Produto(null, " Roçadeira ", 800.00);
+        Produto produto9 = new Produto(null, " Abajour ", 100.00);
+        Produto produto10 = new Produto(null, " Pendente ", 180.00);
+        Produto produto11 = new Produto(null, " Shampoo ", 90.00);
 
         categoria1.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3));
         categoria2.getProdutos().addAll(Arrays.asList(produto2, produto4));
@@ -139,7 +139,7 @@ public class DBService {
         cliente2.getEnderecos().addAll(Arrays.asList(endereco3, endereco4));
 
         clienteRepository.saveAll(Arrays.asList(cliente1, cliente2));
-        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2,endereco3, endereco4));
+        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
