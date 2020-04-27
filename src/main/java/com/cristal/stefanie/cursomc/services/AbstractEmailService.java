@@ -1,5 +1,6 @@
 package com.cristal.stefanie.cursomc.services;
 
+import com.cristal.stefanie.cursomc.domain.Cliente;
 import com.cristal.stefanie.cursomc.domain.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,9 +41,25 @@ public abstract class AbstractEmailService implements EmailService {
         return simpleMailMessage;
     }
 
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+        SimpleMailMessage simpleMailMessage = prepareNewPasswordEmail(cliente, newPass);
+        sendEmail(simpleMailMessage);
+    }
+
+    protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(cliente.getEmail());
+        simpleMailMessage.setFrom(sender);
+        simpleMailMessage.setSubject("Solicitação de nova senha");
+        simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
+        simpleMailMessage.setText("Nova senha: "+newPass);
+        return simpleMailMessage;
+    }
+
     protected String htmlFromTemplatePedido(Pedido obj) {
         Context context = new Context();
-            context.setVariable("pedido", obj);
+        context.setVariable("pedido", obj);
         return templateEngine.process("email/confirmacaoPedido", context);
     }
 
@@ -63,10 +80,9 @@ public abstract class AbstractEmailService implements EmailService {
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setTo(obj.getCliente().getEmail());
         mimeMessageHelper.setFrom(sender);
-        mimeMessageHelper.setSubject("Pedido Confirmado! Código: "+obj.getId());
+        mimeMessageHelper.setSubject("Pedido Confirmado! Código: " + obj.getId());
         mimeMessageHelper.setSentDate(new Date(System.currentTimeMillis()));
         mimeMessageHelper.setText(htmlFromTemplatePedido(obj), true);
         return mimeMessage;
-
     }
 }
