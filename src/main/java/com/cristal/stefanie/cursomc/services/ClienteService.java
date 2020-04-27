@@ -3,11 +3,14 @@ package com.cristal.stefanie.cursomc.services;
 import com.cristal.stefanie.cursomc.domain.Cidade;
 import com.cristal.stefanie.cursomc.domain.Cliente;
 import com.cristal.stefanie.cursomc.domain.Endereco;
+import com.cristal.stefanie.cursomc.domain.enuns.Perfil;
 import com.cristal.stefanie.cursomc.domain.enuns.TipoCliente;
 import com.cristal.stefanie.cursomc.dto.ClienteDTO;
 import com.cristal.stefanie.cursomc.dto.ClienteNewDTO;
 import com.cristal.stefanie.cursomc.repositores.ClienteRepository;
 import com.cristal.stefanie.cursomc.repositores.EnderecoRepository;
+import com.cristal.stefanie.cursomc.security.UserSS;
+import com.cristal.stefanie.cursomc.services.exceptions.AuthorizationException;
 import com.cristal.stefanie.cursomc.services.exceptions.DataIntregrityException;
 import com.cristal.stefanie.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,12 @@ public class ClienteService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Cliente find(Integer id) {
+        UserSS userSS = UserService.authenticated();
+        if (userSS == null || !userSS.hasRole(Perfil.ADMIN) && !id.equals((userSS.getId()))) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+
         Optional<Cliente> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
@@ -77,7 +86,7 @@ public class ClienteService {
     public Cliente fromDTO(ClienteNewDTO objDTO) {
 
         Cidade cidade = new Cidade(objDTO.getCidadeId(), null, null);
-        Cliente cliente = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), TipoCliente.toEnum(objDTO.getTipo()),bCryptPasswordEncoder.encode(objDTO.getSenha()));
+        Cliente cliente = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), TipoCliente.toEnum(objDTO.getTipo()), bCryptPasswordEncoder.encode(objDTO.getSenha()));
         Endereco endereco = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cliente, cidade);
         cliente.getEnderecos().add(endereco);
         cliente.getTelefones().add(objDTO.getTelefone1());
