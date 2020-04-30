@@ -46,6 +46,9 @@ public class ClienteService {
     @Value("${img.prefix.client.profile}")
     private String nomeDoArquivo;
 
+    @Value("${img.profile.size}")
+    private Integer size;
+
     public Cliente find(Integer id) {
         UserSS userSS = UserService.authenticated();
         if (userSS == null || !userSS.hasRole(Perfil.ADMIN) && !id.equals((userSS.getId()))) {
@@ -122,7 +125,11 @@ public class ClienteService {
             throw new AuthorizationException("Acesso negado");
         }
         BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        jpgImage = imageService.cropSquare(jpgImage);
+        jpgImage = imageService.resize(jpgImage, size);
+
         String fileName = nomeDoArquivo + userSS.getId() + ".jpg";
+
         return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
     }
 }
