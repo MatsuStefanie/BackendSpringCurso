@@ -14,6 +14,7 @@ import com.cristal.stefanie.cursomc.services.exceptions.AuthorizationException;
 import com.cristal.stefanie.cursomc.services.exceptions.DataIntregrityException;
 import com.cristal.stefanie.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -36,9 +38,13 @@ public class ClienteService {
     private EnderecoRepository repoEnd;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     private S3Service s3Service;
+    @Autowired
+    private ImageService imageService;
+
+    @Value("${img.prefix.client.profile}")
+    private String nomeDoArquivo;
 
     public Cliente find(Integer id) {
         UserSS userSS = UserService.authenticated();
@@ -112,13 +118,11 @@ public class ClienteService {
 
     public URI uploadProfilePicture(MultipartFile multipartFile) {
         UserSS userSS = UserService.authenticated();
-        if(userSS == null){
-            throw  new AuthorizationException("Acesso negado");
+        if (userSS == null) {
+            throw new AuthorizationException("Acesso negado");
         }
-        URI uri = s3Service.uploadFile(multipartFile);
-        Cliente cliente = repo.findById(userSS.getId()).orElseThrow(() -> new RuntimeException("Cliente com id " + userSS.getId() + " não foi encontrado"));
-        cliente.setImageUrl(uri.toString());
-        repo.save(cliente);
-        return uri;
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = nomeDoArquivo + userSS.getId() + ".jpg";
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
     }
 }
