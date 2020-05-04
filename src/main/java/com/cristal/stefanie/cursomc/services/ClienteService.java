@@ -1,5 +1,6 @@
 package com.cristal.stefanie.cursomc.services;
 
+import com.cristal.stefanie.cursomc.domain.Categoria;
 import com.cristal.stefanie.cursomc.domain.Cidade;
 import com.cristal.stefanie.cursomc.domain.Cliente;
 import com.cristal.stefanie.cursomc.domain.Endereco;
@@ -86,6 +87,20 @@ public class ClienteService {
 
     public List<Cliente> findAll() {
         return repo.findAll();
+    }
+
+    public Cliente findByEmail(String email){
+        UserSS userSS = UserService.authenticated();
+        if(userSS==null || !userSS.hasRole(Perfil.ADMIN) && !email.equals(userSS.getUsername())){
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        Cliente obj = repo.findByEmail(email);
+        if(obj == null){
+            throw new ObjectNotFoundException("Objeto não encontrado. Id: "+ userSS.getId()
+            + ", Tipo: " + Cliente.class.getName());
+        }
+        return  obj;
     }
 
     public Page<Cliente> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
